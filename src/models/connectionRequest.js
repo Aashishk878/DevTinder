@@ -25,6 +25,13 @@ const connectionRequestSchema = new mongoose.Schema(
     }
 );
 
+//compound index
+connectionRequestSchema.index({fromUserId : 1, //1 -> ascending order, -1 => desc. order
+    toUserId : 1
+})
+
+//* mongoDB indexes => if 1000 users send request to each other => there will be around 1000*1000 entries in db => when we use find function on db...it'll be very time consuming => indexes make this query faster
+
 //& similar to middleware
 connectionRequestSchema.pre("save", function(next) {
     //! DONT USE ARROW FUNC HERE

@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     emailId : {
         type: String,
         required: true,
-        unique: true,
+        unique: true, //* a unique field gets an index by mongodb itself => no need to manually provide index
         lowercase: true, //whatever case the user enters => it will be stored in lowercase letters only
         trim:true,//mongodb will consider emailid with and without spaces differently => hence, we have to trim the spaces
         validate(value)
