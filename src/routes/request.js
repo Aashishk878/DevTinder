@@ -65,4 +65,46 @@ requestRouter.post("/request/send/:status/:toUserId",
   }
 );
 
+requestRouter.post("/request/review/:status/:requestId", userAuth, async(req, res) => {
+  try {
+    const loggedInUser = req.user;
+    const {status, requestId} = req.params;
+
+    //^validate the status
+    const allowedStatus = ["accepted", "rejected"];
+
+    if(!allowedStatus.includes(status)) {
+      return res.status(400).json({message : "Status not allowed"});
+    }
+
+    //This queries the MongoDB database using Mongoose. It tries to find one document (i.e., record) in the ConnectionRequestModel collection that matches the conditions.
+    const connectionRequest = await ConnectionRequestModel.findOne({
+      _id : requestId,
+      toUserId : loggedInUser._id,
+      status : "interested",
+    });
+
+    if(!connectionRequest)
+    {
+      return res.status(404).json({messgae : "Connection request not found"});
+    }
+
+    connectionRequest.status = status; 
+
+    const data = await connectionRequest.save();
+
+    res.json({message: "Connection request" + status, data});
+     
+    //akshay => elon
+    //* is elon logged in??
+    //* existing status should be interested state
+    //* request id should be valid
+
+  }
+  catch(err) {
+    res.status(400).send("ERROR :" + err.message);
+  }
+
+});
+
 module.exports = requestRouter; 
