@@ -2,6 +2,7 @@ const express = require("express");
 const connectDB = require("./config/database");
 
 const app = express();
+const cors = require("cors")
 
 // const User = require("./models/user");
 // const {validateSignUpData} = require("./utils/validation");
@@ -185,6 +186,15 @@ const cookieParser = require("cookie-parser");
 
 //& Middleware for json format provided by express
 
+app.use(cors
+  ({
+  //cookies were not set bcuz if we're not on the same domain or we're not on a secure network => the axios/browser doesn't allow setting cookies  => so we've to use corsoptions to whitelist some domains
+
+  origin: "http://localhost:5173",//FROM WHERE THE FRONTEND IS HOSTED
+  credentials: true,
+
+  })
+);
 app.use(express.json()); //it'll be activated for all the routes(middleware)
 app.use(cookieParser());
 
