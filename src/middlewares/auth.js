@@ -14,7 +14,9 @@ const userAuth = async (req,res,next) => {
 
         if(!token)
         {
-            throw new Error("Token is not valid!!!");
+            // throw new Error("Token is not valid!!!");
+            return res.status(401).send("Please login"); 
+            //& 401 => u are not authorised
         }
 
         const decodedObj = await jwt.verify(token, "DEV@Tinder$790");

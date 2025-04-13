@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     firstName : {
         type: String,
         required: true,
-        minLength: 4,
+        minLength: 3,
         maxLength: 50
     },
     lastName : {
@@ -47,8 +47,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         //~ custom validation function
         validate(value){
-            if(!["male", "female", "others"].includes(value)){
-                throw new Error("Gender data is not valid");
+            if(!["male", "female", "other", "prefer not to say"].includes(value.toLowerCase())){
+                throw new Error(value + " is not a valid gender type");
             }
         } //! BY DEFAULT, validator only works when we are creating a new user and not while updating a user => we'll have to enable it => RUN VALIDATORS IN FINDBYIDANDUPDATE
     },
