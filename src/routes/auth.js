@@ -33,9 +33,21 @@ authRouter.post("/signup", async (req,res) => {
         password:passwordHash,
       })
   
-      await user.save();  //data will be saved to ur database and it returns a promise
+      const savedUser = await user.save();  //data will be saved to ur database and it returns a promise
   
-      res.send("User Added successfully");
+      // res.send("User Added successfully");
+      //& we want to login that signed up user => i want to set the cookie and also send user as response(same as login)
+
+      const token = await savedUser.getJWT();
+  
+        res.cookie("token", token, {
+          expires: new Date(Date.now() + 8*3600000), //* this is for expiring cookie
+        });
+
+      res.json({
+        message: "User Added Successfully",
+        data : savedUser
+      });
   
     } catch(err) {
       res.status(400).send("Error:" + err.message);
