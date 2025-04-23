@@ -61,7 +61,7 @@ const Premium = () => {
             </ul>
             <div className="text-xl font-semibold mb-4">₹199/month</div>
             <button
-              onClick={() => handleBuyClick('gold')}
+              onClick={() => handleBuyClick('silver')}
               className="btn btn-outline btn-neutral"
             >
               Choose Silver
